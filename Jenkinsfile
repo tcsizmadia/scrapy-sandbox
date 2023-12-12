@@ -8,11 +8,14 @@ pipeline {
     
     stages {
         stage('Scrape Website') {
+
             steps {
-                if (params.DRY_RUN) {
-                    echo 'Dry run, no scraping will happen'
-                } else {
-                    sh 'scrapy crawl sandbox_spider -o sandbox.json'
+                script {
+                    if (params.DRY_RUN) {
+                        echo 'Dry run, no scraping will happen'
+                    } else {
+                        sh 'scrapy crawl sandbox_spider -o sandbox.json'
+                    }
                 }
             }
         }
@@ -36,9 +39,11 @@ pipeline {
                 }
             }
             steps {
-                if (params.SLACK_SEND) {
-                    // Send notification to Slack
-                    slackSend channel: '#sandbox', color: 'good', message: 'Scraping completed!'
+                script {
+                    if (params.SLACK_SEND) {
+                        // Send notification to Slack
+                        slackSend channel: '#sandbox', color: 'good', message: 'Scraping completed!'
+                    }
                 }
             }
         }
