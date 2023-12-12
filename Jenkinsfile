@@ -7,33 +7,38 @@ pipeline {
     }
     
     stages {
-        if (params.DRY_RUN) {
-            stage('Dry Run') {
-                steps {
-                    echo 'Dry run mode enabled, no scraping will happen!'
-                }
-            }
-        } else {
-            stage('Scrape Website') {
-                steps {
-                    // Execute scrapy spider
+        stage('Scrape Website') {
+            steps {
+                if (params.DRY_RUN) {
+                    echo 'Dry run, no scraping will happen'
+                } else {
                     sh 'scrapy crawl sandbox_spider -o sandbox.json'
                 }
             }
-            
-            stage('Archive') {
-                steps {
-                    // Archive the scraped data
-                    archiveArtifacts artifacts: 'sandbox.json', fingerprint: true
+        }
+        
+        stage('Archive') {
+            when {
+                expression {
+                    currentBuild.result == 'SUCCESS'
                 }
             }
-            
-            stage('Notify') {
-                steps {
-                    if (params.SLACK_SEND) {
-                        // Send notification to Slack
-                        slackSend channel: '#sandbox', color: 'good', message: 'Scraping completed!'
-                    }
+            steps {
+                // Archive the scraped data
+                archiveArtifacts artifacts: 'sandbox.json', fingerprint: true
+            }
+        }
+        
+        stage('Notify') {
+            when {
+                expression {
+                    currentBuild.result == 'SUCCESS'
+                }
+            }
+            steps {
+                if (params.SLACK_SEND) {
+                    // Send notification to Slack
+                    slackSend channel: '#sandbox', color: 'good', message: 'Scraping completed!'
                 }
             }
         }
