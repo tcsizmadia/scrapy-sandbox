@@ -1,8 +1,6 @@
 pipeline {
     agent {
-        docker {
-            image 'tcsizmadia/scrapy-docker-agent'
-        }
+        label 'scrapy-docker-agent'
     }
     
     parameters {
