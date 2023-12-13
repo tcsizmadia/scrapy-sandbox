@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'tcsizmadia/scrapy-docker-agent'
+        }
+    }
     
     parameters {
         booleanParam(name: 'DRY_RUN', defaultValue: false, description: 'No scraping will happen')
@@ -8,7 +12,6 @@ pipeline {
     
     stages {
         stage('Scrape Website') {
-
             steps {
                 script {
                     if (params.DRY_RUN) {
