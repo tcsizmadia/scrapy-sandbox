@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        docker { image 'tcsizmadia/scrapy-docker-agent' }
+        docker { image 'tcsizmadia/scrapy-jenkins-agent' }
     }
     
     parameters {
