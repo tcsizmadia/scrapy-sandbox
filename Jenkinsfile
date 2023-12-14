@@ -9,6 +9,14 @@ pipeline {
     }
     
     stages {
+        stage('Pre-Flight') {
+            steps {
+                // Check Python version
+                sh 'python --version'
+                // Check Scrapy version
+                sh 'scrapy version'
+            }
+        }
         stage('Scrape Website') {
             steps {
                 script {
