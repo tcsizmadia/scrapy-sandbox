@@ -6,7 +6,10 @@ services:
       dockerfile: Dockerfile
     image: tcsizmadia/scrapy-jenkins-agent
   jenkins:
-    image: jenkins/jenkins:lts
+    build:
+      context: jenkins
+      dockerfile: Dockerfile
+    image: tcsizmadia/jenkins
     environment:
       - DOCKER_HOST=unix:///var/run/docker.sock
     ports:
