@@ -12,7 +12,7 @@ pipeline {
         stage('Pre-Flight') {
             steps {
                 // Check Python version
-                sh 'python --version'
+                sh 'python3 --version'
                 // Check Scrapy version
                 sh 'scrapy version'
             }
