@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        docker { image 'tcsizmadia/scrapy-jenkins-agent' }
+    }
     
     parameters {
         booleanParam(name: 'DRY_RUN', defaultValue: false, description: 'No scraping will happen')
@@ -7,8 +9,15 @@ pipeline {
     }
     
     stages {
+        stage('Pre-Flight') {
+            steps {
+                // Check Python version
+                sh 'python3 --version'
+                // Check Scrapy version
+                sh 'scrapy version'
+            }
+        }
         stage('Scrape Website') {
-
             steps {
                 script {
                     if (params.DRY_RUN) {
