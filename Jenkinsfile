@@ -9,6 +9,18 @@ pipeline {
     }
     
     stages {
+        tage('Checkout') {
+            steps {
+                checkout([
+                    $class: 'GitSCM', 
+                    branches: [[name: '*/main']], 
+                    doGenerateSubmoduleConfigurations: false, 
+                    extensions: [], 
+                    submoduleCfg: [], 
+                    userRemoteConfigs: [[url: 'git@github.com:tcsizmadia/iphone-price-scraper.git']]
+                ])
+            }
+        }
         stage('Pre-Flight') {
             steps {
                 // Check Python version
