@@ -9,7 +9,7 @@ pipeline {
     }
     
     stages {
-        tage('Checkout') {
+        stage('Checkout') {
             steps {
                 checkout([
                     $class: 'GitSCM', 
