@@ -17,7 +17,7 @@ pipeline {
                     doGenerateSubmoduleConfigurations: false, 
                     extensions: [], 
                     submoduleCfg: [], 
-                    userRemoteConfigs: [[url: 'git@github.com:tcsizmadia/iphone-price-scraper.git']]
+                    userRemoteConfigs: [[url: 'https://github.com/tcsizmadia/iphone-price-scraper.git']]
                 ])
             }
         }
