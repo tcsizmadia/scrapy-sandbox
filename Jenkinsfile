@@ -69,4 +69,9 @@ pipeline {
             }
         }
     }
+    post {
+        always {
+            archiveArtifacts artifacts: 'iphone_price_bot/iphone_prices.csv', fingerprint: true
+        }
+    }
 }
