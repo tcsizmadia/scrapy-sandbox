@@ -9,6 +9,18 @@ pipeline {
     }
     
     stages {
+        stage('Checkout') {
+            steps {
+                checkout([
+                    $class: 'GitSCM', 
+                    branches: [[name: '*/main']], 
+                    doGenerateSubmoduleConfigurations: false, 
+                    extensions: [], 
+                    submoduleCfg: [], 
+                    userRemoteConfigs: [[url: 'https://github.com/tcsizmadia/iphone-price-scraper.git']]
+                ])
+            }
+        }
         stage('Pre-Flight') {
             steps {
                 // Check Python version
@@ -23,7 +35,7 @@ pipeline {
                     if (params.DRY_RUN) {
                         echo 'Dry run, no scraping will happen'
                     } else {
-                        sh 'scrapy crawl sandbox_spider -o sandbox.json'
+                        sh 'cd iphone_price_bot && scrapy crawl apple_website_spider'
                     }
                 }
             }
@@ -55,6 +67,11 @@ pipeline {
                     }
                 }
             }
+        }
+    }
+    post {
+        always {
+            archiveArtifacts artifacts: 'iphone_price_bot/iphone_prices.csv', fingerprint: true
         }
     }
 }
